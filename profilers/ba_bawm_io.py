@@ -1,35 +1,26 @@
 from bcc import BPF
-from ctypes import c_uint
+import ctypes
 import time
 
-bpf_source = """
-BPF_HASH(io_count, u32, u64, 1);
+HASH_KEY = ctypes.c_uint(1)
 
-TRACEPOINT_PROBE(block, block_rq_issue) {
-    u32 key = 0;
+bpf_source = f"""
+BPF_TABLE_PINNED("hash", u64, u64, ba_bawm, 1024, "/sys/fs/bpf/ba_bawm");
+
+TRACEPOINT_PROBE(block, block_rq_issue) {{
+    u64 key = {HASH_KEY.value};
     u64 zero = 0, *val;
 
-    val = io_count.lookup_or_init(&key, &zero);
+    val = ba_bawm.lookup_or_init(&key, &zero);
     (*val) += 1;
+
     return 0;
-}
+}}
 """
-
 b = BPF(text=bpf_source)
-io_count = b["io_count"]
 
-KEY = c_uint(0)
-
-THRESHOLD = 500
-INTERVAL = 5
-
-print("Monitoring block I/O activity...")
-while True:
-    time.sleep(INTERVAL)
-
-    val = io_count[KEY].value if KEY in io_count else 0
-    status = "HIGH" if val >= THRESHOLD else "LOW"
-    print(f"[{val} requests] I/O Activity: {status}")
-
-    io_count.clear()
-
+try:
+    while True:
+        time.sleep(3600)
+except KeyboardInterrupt:
+    print("Detaching and exiting.")

@@ -1,39 +1,26 @@
 from bcc import BPF
-from ctypes import c_uint
+import ctypes
 import time
 
-bpf_text = """
-BPF_HASH(cpu_cs_count, u32, u64);
+HASH_KEY = ctypes.c_uint(0)
 
-TRACEPOINT_PROBE(sched, sched_switch) {
-    u32 key = 0;
-    u64 *val = cpu_cs_count.lookup(&key);
-    if (val) {
-        (*val) += 1;
-    } else {
-        u64 init = 1;
-        cpu_cs_count.update(&key, &init);
-    }
+bpf_text = f"""
+BPF_TABLE_PINNED("hash", u64, u64, ba_bawm, 1024, "/sys/fs/bpf/ba_bawm");
+
+TRACEPOINT_PROBE(sched, sched_switch) {{
+    u64 key = {HASH_KEY.value};
+    u64 zero = 0, *val;
+
+    val = ba_bawm.lookup_or_init(&key, &zero);
+    (*val) += 1;
+
     return 0;
-}
+}}
 """
-
 b = BPF(text=bpf_text)
 
-KEY = c_uint(0)
-
-THRESHOLD = 1000
-INTERVAL = 5
-
-print("Monitoring CPU context switches...")
-
-while True:
-    time.sleep(INTERVAL)
-    val = b["cpu_cs_count"].get(KEY)
-    count = val.value if val else 0
-
-    status = "HIGH" if count >= THRESHOLD else "LOW"
-    print(f"[{count} context switches] CPU Activity: {status}")
-
-    b["cpu_cs_count"].clear()
-
+try:
+    while True:
+        time.sleep(3600)
+except KeyboardInterrupt:
+    print("Detaching and exiting.")
