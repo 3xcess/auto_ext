@@ -2,6 +2,8 @@
 
 In dynamic environments with changing workloads, such as personal computers, the burden of selecting and dispatching the appropriate scheduler often falls on the user. In this project, we propose a method for automating workload profiling using eBPF. Our solution, called SCX Ba-Bawm, is a portable and system-agnostic package.
 
+![Demo](https://raw.githubusercontent.com/EddieFed/scx_ba_bawm/refs/heads/main/assets/demo.gif)
+
 ## Prerequisites
 - Linux Kernel >= 6.12 (Or kernel patched to enable sched_ext and eBPF capabilities).
 - sched_ext/scx (if patched kernel)
