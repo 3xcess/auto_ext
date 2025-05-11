@@ -2,7 +2,7 @@
 
 In dynamic environments with changing workloads, such as personal computers, the burden of selecting and dispatching the appropriate scheduler often falls on the user. In this project, we propose a method for automating workload profiling using eBPF. Our solution, called SCX Ba-Bawm, is a portable and system-agnostic package.
 
-![Demo](https://raw.githubusercontent.com/EddieFed/scx_ba_bawm/refs/heads/main/assets/demo.gif)
+This repository contains our current code for the implementations of the profilers and the dispatcher, a video demo, scripts to run the code, as well as the related [paper](https://github.com/EddieFed/scx_ba_bawm).
 
 ## Prerequisites
 - Linux Kernel >= 6.12 (Or kernel patched to enable sched_ext and eBPF capabilities).
@@ -20,3 +20,4 @@ In dynamic environments with changing workloads, such as personal computers, the
 - The dispatcher script is also displaying current system load (HIGH/LOW output from the individual profilers)
 - We run a sample network load test (bottom left)
 - The dispatcher correctly identifies the network heavy workload and switches to the correct scheduler (right half)
+![Demo](https://raw.githubusercontent.com/EddieFed/scx_ba_bawm/refs/heads/main/assets/demo.gif)
