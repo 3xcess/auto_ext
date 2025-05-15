@@ -2,7 +2,7 @@
 
 In dynamic environments with changing workloads, such as personal computers, the burden of selecting and dispatching the appropriate scheduler often falls on the user. In this project, we propose a method for automating workload profiling using eBPF. Our solution, called SCX Ba-Bawm, is a portable and system-agnostic package.
 
-This repository contains our current code for the implementations of the profilers and the dispatcher, a video demo, scripts to run the code, as well as the related [paper](https://github.com/EddieFed/scx_ba_bawm/blob/main/scx_Ba-Bawm.pdf).
+This repository contains our current code for the implementations of the profilers and the dispatcher, a video demo, scripts to run the code, as well as the related [paper](https://github.com/EddieFed/scx_ba_bawm/blob/main/scx-Ba-Bawm.pdf).
 
 ## Prerequisites
 - Linux Kernel >= 6.12 (Or kernel patched to enable sched_ext and eBPF capabilities).
@@ -11,7 +11,7 @@ This repository contains our current code for the implementations of the profile
 - bcc/BPF
 
 ## Instructions to run
-- Clone the repo: ``` git clone https://github.com/EddieFed/scx_ba_bawm ```
+- Clone the repo: ``` git clone https://github.com/EddieFed/scx-ba-bawm ```
 - Start the profilers: ```sudo sh ./start.sh```
 - Start the automatic dispatcher: ```sudo python dispatcher.py```
 
