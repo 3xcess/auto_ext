@@ -14,8 +14,7 @@ struct {
 
 SEC("tracepoint/sched/sched_switch")
 
-int handle_sched_switch(struct trace_event_raw_sched_switch *ctx)
-{
+int handle_sched_switch(struct trace_event_raw_sched_switch *ctx) {
     __u64 key = 0;
     __u64 zero = 0, *val;
 
