@@ -1,0 +1,12 @@
+1. Makefile for the complete folder
+2. Each profiler currently imports vmlinux from its own folder, change that to a unified import
+3. Might generate vmlinux directly from makefile during first run
+4. Update the dispatcher and eval programs:
+   |-+ Might first try just updating a copy of the current python dispatcher
+   | |-Eventually want to write a complete C alternative, if possible using scx
+   |
+   |-+ Will also need to update start.sh
+
+NOT URGENT:
+>_ Add a performance overhead check
+>_ Compare performance with the python counterpart once overhead check is implemented

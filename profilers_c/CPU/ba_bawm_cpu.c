@@ -51,8 +51,3 @@ int main(int argc, char **argv) {
         ba_bawm_skel_bpf__destroy(skel);
         return err < 0 ? -err : 0;
 }
-
-// TODO:
-// Makefile remaining
-// Imports vmlinux currently from own folder, change that
-// Add a performance overhead check
