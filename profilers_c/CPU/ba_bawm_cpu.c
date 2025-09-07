@@ -6,14 +6,13 @@
 #include "ba_bawm_cpu.skel.h"
 
 static volatile sig_atomic_t exiting = 0;
-
 void handle_signal(int sig) {
     exiting = 1;
 }
 
 int main(int argc, char **argv) {
 
-    struct ba_bawm_skel_bpf *skel;
+    struct ba_bawm_cpu_skel_bpf *skel;
     int err;
 
     signal(SIGINT, handle_signal);
@@ -29,25 +28,23 @@ int main(int argc, char **argv) {
     }
     #endif
 
-    skel = ba_bawm_skel_bpf__open_and_load();
+    skel = ba_bawm_cpu_skel_bpf__open_and_load();
     if (!skel) {
-        fprintf(stderr, "Failed to open and load BPF skeleton\n");
+        fprintf(stderr, "Failed to open and load BPF skeleton  >>> CPU\n");
         return 1;
     }
 
-    err = ba_bawm_skel_bpf__attach(skel);
+    err = ba_bawm_cpu_skel_bpf__attach(skel);
     if (err) {
-        fprintf(stderr, "Failed to attach BPF program\n");
+        fprintf(stderr, "Failed to attach BPF program  >>> CPU\n");
         goto cleanup;
     }
-
-    printf("Program loaded and attached. Press Ctrl-C to exit.\n");
 
     while (!exiting) {
         sleep(1);
     }
 
     cleanup:
-        ba_bawm_skel_bpf__destroy(skel);
+        ba_bawm_cpu_skel_bpf__destroy(skel);
         return err < 0 ? -err : 0;
 }

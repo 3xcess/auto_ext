@@ -23,17 +23,15 @@ int main(int argc, char **argv) {
 
     skel = ba_bawm_mem_skel_bpf__open_and_load();
     if (!skel) {
-        fprintf(stderr, "Failed to open and load BPF skeleton\n");
+        fprintf(stderr, "Failed to open and load BPF skeleton  >>> MEM\n");
         return 1;
     }
 
     err = ba_bawm_mem_skel_bpf__attach(skel);
     if (err) {
-        fprintf(stderr, "Failed to attach BPF program\n");
+        fprintf(stderr, "Failed to attach BPF program  >>> MEM\n");
         goto cleanup;
     }
-
-    printf("Program loaded and attached. Press Ctrl-C to exit.\n");
 
     while (!exiting) {
         sleep(1);

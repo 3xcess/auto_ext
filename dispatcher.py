@@ -6,13 +6,13 @@ import time
 from eval import evaluate, SystemLoad
 
 # TODO: For now each workload is a single scheduler, ideally we could have overlapping workloads do something else too
-SCHED_PATH = "/home/eddie/scx/build/scheds/c"
+SCHED_PATH = "/home/finale/scx"
 scheds = {
-    SystemLoad.CPU:     "scx_simple", 
-    SystemLoad.IO:      "scx_prev", 
-    SystemLoad.MEM:     "scx_simple", 
-    SystemLoad.NET:     "scx_nest",
-    SystemLoad.IDLE:    "scx_simple"
+    SystemLoad.CPU:     "build/scheds/c/scx_simple",
+    SystemLoad.IO:      "target/release/scx_bpfland",
+    SystemLoad.MEM:     "build/scheds/c/scx_simple",
+    SystemLoad.NET:     "target/release/scx_bpfland",
+    SystemLoad.IDLE:    "build/scheds/c/scx_central"
 }
 load = { }
 for s_load in list(scheds.keys())[:-1]:
