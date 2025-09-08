@@ -1,4 +1,3 @@
-
 import enum
 
 class SystemLoad(enum.Enum):
@@ -9,7 +8,7 @@ class SystemLoad(enum.Enum):
     IDLE    = 5
 
 def evaluate(cpu, io, mem, network):
-    
+
     if network:
         return SystemLoad.NET
     else:
