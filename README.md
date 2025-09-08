@@ -15,9 +15,9 @@ This repository contains our current code for the implementations of the profile
 ## Instructions to run
 - Clone the repo: ``` git clone https://github.com/EddieFed/scx-ba-bawm ```
 - Run the install script ```sudo sh ./install.sh```
-- Start the profilers:
+- Start the profilers (choose any option):
   - Python Profilers ```sudo sh ./start.sh```
-  - OR C profilers (recommended) ```sudo sh ./start_c.sh```
+  - C profilers (recommended) ```sudo sh ./start_c.sh```
 - Start the automatic dispatcher: ```sudo python dispatcher.py```
 
 ## Demo
