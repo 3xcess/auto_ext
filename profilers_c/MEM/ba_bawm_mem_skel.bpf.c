@@ -15,7 +15,7 @@ struct {
 
 SEC("tracepoint/kmem/mm_page_alloc")
 int trace_mm_page_alloc(struct trace_event_raw_kmem_mm_page_alloc *ctx) {
-    __u64 key = 3;
+    __u64 key = 2;
     __u64 zero = 0;
     __u64 *val;
 

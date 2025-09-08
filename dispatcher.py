@@ -6,7 +6,7 @@ import time
 from eval import evaluate, SystemLoad
 
 # TODO: For now each workload is a single scheduler, ideally we could have overlapping workloads do something else too
-SCHED_PATH = "/home/finale/scx"
+SCHED_PATH = "./scx"
 scheds = {
     SystemLoad.CPU:     "build/scheds/c/scx_simple",
     SystemLoad.IO:      "target/release/scx_bpfland",

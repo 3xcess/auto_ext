@@ -15,7 +15,7 @@ struct {
 
 SEC("tracepoint/net/net_dev_queue")
 int handle_net_dev_queue(struct trace_event_raw_net_dev_template *ctx) {
-    __u64 key = 2;
+    __u64 key = 3;
     __u64 zero = 0;
     __u64 *val;
 
