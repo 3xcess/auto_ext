@@ -20,8 +20,8 @@ for s_load in list(scheds.keys())[:-1]:
 
 curr_load = SystemLoad.CPU
 
-SLEEP_INTERVAL = 2
-THRESHOLD = 500
+SLEEP_INTERVAL = 3
+THRESHOLD = 1000
 
 p = subprocess.Popen([f'{SCHED_PATH}/{scheds[SystemLoad.CPU]}'], stdout=subprocess.DEVNULL)
 while(True):
@@ -30,7 +30,7 @@ while(True):
     # TODO: Move this logic to the individual ebpf programs
     # This should also include making a bool value to mark if the load is high or not
     for i, s_load in enumerate(load): 
-        load[s_load] = True if b["ba_bawm"].get(ctypes.c_uint(i)).value >= THRESHOLD else False
+        load[s_load] = b["ba_bawm"].get(ctypes.c_uint(i)).value >= THRESHOLD if b["ba_bawm"].get(ctypes.c_uint(i)) is not None else False
 
     print(load)
 
