@@ -9,10 +9,15 @@ This repository contains our current code for the implementations of the profile
 - sched_ext/scx (if patched kernel)
 - python
 - bcc/BPF
+- Optional:
+  - tmux
 
 ## Instructions to run
 - Clone the repo: ``` git clone https://github.com/EddieFed/scx-ba-bawm ```
-- Start the profilers: ```sudo sh ./start.sh```
+- Run the install script ```sudo sh ./install.sh```
+- Start the profilers:
+  - Python Profilers ```sudo sh ./start.sh```
+  - OR C profilers (recommended) ```sudo sh ./start_c.sh```
 - Start the automatic dispatcher: ```sudo python dispatcher.py```
 
 ## Demo
