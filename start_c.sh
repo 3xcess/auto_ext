@@ -2,11 +2,6 @@
 
 cd ./profilers_c
 
-if [[ "$EUID" -ne 0 ]]; then
-    echo "Please run as sudo!"
-    exit 1
-fi
-
 set -euo pipefail
 echo "Launching ba-bawm profilers. Press Ctrl+C or kill this script to stop them."
 
