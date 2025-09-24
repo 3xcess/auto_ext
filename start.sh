@@ -1,10 +1,5 @@
 #!/bin/bash
 
-if [[ "$EUID" -ne 0 ]]; then
-    echo "Please run as sudo!"
-    exit 1
-fi
-
 set -euo pipefail
 
 echo "Starting all profilers..."
@@ -15,7 +10,7 @@ PROFILERS=($(jq -r '.profilers[]' "$CONFIG_FILE"))
 
 for PROFILER in "${PROFILERS[@]}"; do
     echo "${PROFILER}"
-    python3 "${SCRIPT_DIR}/${PROFILER}.py" &
+    sudo python3 "${SCRIPT_DIR}/${PROFILER}.py" &
 done
 
 echo "All scripts launched. Press Ctrl+C or kill this script to stop them."

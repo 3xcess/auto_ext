@@ -42,4 +42,7 @@ bpftool btf dump file /sys/kernel/btf/vmlinux format c > vmlinux.h
 echo "[*] Building C profilers"
 make
 
+cd ../
+chmod +x start_c.sh
+
 echo "[*] All done! scx-ba-bawm is ready to use."

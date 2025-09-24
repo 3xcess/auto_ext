@@ -5,9 +5,10 @@ class SystemLoad(enum.Enum):
     IO      = 1
     MEM     = 2
     NET     = 3
+    PARALLEL= 4
     IDLE    = 5
 
-def evaluate(cpu, io, mem, network):
+def evaluate(cpu, io, mem, network, parallel):
 
     if network:
         return SystemLoad.NET
@@ -15,6 +16,8 @@ def evaluate(cpu, io, mem, network):
         if io:
             return SystemLoad.IO
         elif cpu:
+            if parallel:
+                return SystemLoad.PARALLEL
             return SystemLoad.CPU
         elif mem:
             return SystemLoad.MEM
