@@ -15,7 +15,7 @@ This repository contains our current code for the implementations of the profile
 Rest of the dependencies are handled by the install script
 
 ## Instructions to run
-- Clone the repo: ``` git clone https://github.com/EddieFed/scx-ba-bawm ```
+- Clone the repo: ``` https://github.com/3xcess/auto_ext.git ```
 - Run the install script ```./install.sh```
 - Start the profilers (choose any option):
   - Python Profilers ```./start.sh```
