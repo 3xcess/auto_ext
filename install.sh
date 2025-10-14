@@ -30,7 +30,8 @@ make install INSTALL_DIR=~/bin
 echo "[*] C schedulers install complete..."
 
 echo "[*] Building Rust schedulers..."
-cargo build --release
+cargo build --profile=release-tiny
+# cargo build --release -p scx_bpfland
 echo "[*] Installing Rust schedulers..."
 ls -d scheds/rust/scx_* | xargs -I{} cargo install --path {}
 echo "[*] Rust schedulers install complete"
