@@ -33,4 +33,16 @@ case "$PROFILER" in
         ;;
 esac
 
+# Wait for the pinned BPF map to appear before starting the dispatcher
+echo ">>> Waiting for /sys/fs/bpf/ba_bawm to be created..."
+for i in {1..20}; do
+    if [ -e /sys/fs/bpf/ba_bawm ]; then
+        break
+    fi
+    sleep 0.5
+done
+
+echo ">>> Launching dispatcher (sudo python dispatcher.py)"
+(cd .. && sudo python dispatcher.py) &
+
 wait
