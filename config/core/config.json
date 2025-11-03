@@ -1,0 +1,9 @@
+{
+    "script_dir": "./profilers",
+    "profilers": [
+        "ba_bawm_cpu",
+        "ba_bawm_io",
+        "ba_bawm_mem",
+        "ba_bawm_net"
+    ]
+}
