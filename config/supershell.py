@@ -96,6 +96,34 @@ async def parse_builtin(line):
         await asyncio.gather(*tasks)
         print("[supershell] all VMs are shutting down.")
         return True
+    
+    if line.startswith(":pull"):
+        import subprocess, os
+        parts = line.split()
+        if len(parts) < 3:
+            print("[supershell] Usage: :pull <remote_path> <local_path>")
+            return True
+        remote_path = parts[1]
+        local_path = parts[2]
+        os.makedirs(local_path, exist_ok=True)
+        vm_ports = {"vm1": 2221, "vm2": 2222, "vm3": 2223}
+        key_path = "vms/sshkey/id_ed25519"
+
+        for vm, port in vm_ports.items():
+            vm_dest = os.path.join(local_path, vm)
+            os.makedirs(vm_dest, exist_ok=True)
+            print(f"[supershell] Pulling from {vm}:{remote_path} → {vm_dest}/")
+            cmd = [
+                "scp",
+                "-i", key_path,
+                "-P", str(port),
+                "-o", "StrictHostKeyChecking=no",
+                "-o", "UserKnownHostsFile=/dev/null",
+                "-r", f"u@localhost:{remote_path.rstrip('/')}/.",
+                vm_dest,
+            ]
+            subprocess.run(cmd)
+        return True
 
     return False
 
