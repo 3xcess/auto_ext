@@ -81,7 +81,8 @@ for idx in "${!HOST_CORES[@]}"; do
 done
 
 WORKDIR=$(pwd)/vms
-SHARE_DIR=$(pwd)/shared
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SHARE_DIR="$(dirname "$SCRIPT_DIR")"
 mkdir -p "$WORKDIR" "$SHARE_DIR"
 
 # === Generate SSH key (if not exist) ===

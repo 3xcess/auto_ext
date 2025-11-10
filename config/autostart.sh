@@ -2,7 +2,7 @@
 
 
 VM_ID=$(cat /etc/hostname 2>/dev/null || echo unknown)
-AUTO_EXT_DIR="/mnt/w/simple/core/"
+AUTO_EXT_DIR="/mnt/w/"
 
 cd "$AUTO_EXT_DIR" || exit 1
 ./get-dependencies.sh

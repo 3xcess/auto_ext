@@ -77,7 +77,8 @@ if [ ! -f "$BASE_IMG" ]; then
 fi
 
 WORKDIR=$(pwd)/vms
-SHARE_DIR=$(pwd)/shared
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SHARE_DIR="$(dirname "$SCRIPT_DIR")"
 mkdir -p "$WORKDIR" "$SHARE_DIR"
 
 KEYDIR="$WORKDIR/sshkey"

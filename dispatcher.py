@@ -1,21 +1,29 @@
 from bcc import BPF
+from system_load_enum import SystemLoad
 import ctypes
 import subprocess
 import time
 import os
+import json
+import sys
 
-from eval import evaluate, SystemLoad
+from eval import evaluate
 
-# TODO: For now each workload is a single scheduler, ideally we could have overlapping workloads do something else too
-SCHED_PATH = "./scx"
-scheds = {
-    SystemLoad.CPU:     "build/scheds/c/scx_simple",
-    SystemLoad.IO:      "target/release/scx_bpfland",
-    SystemLoad.MEM:     "build/scheds/c/scx_simple",
-    SystemLoad.NET:     "target/release/scx_bpfland",
-    SystemLoad.PARALLEL: "build/scheds/c/scx_simple",
-    SystemLoad.IDLE:    "build/scheds/c/scx_central"
-}
+
+cfg_name = "dispatcher_config_main.json"
+if len(sys.argv) > 1 and sys.argv[1] == "alt":
+    cfg_name = "dispatcher_config_alt.json"
+
+# print(f"[dispatcher] Using configuration: {cfg_name}")
+
+with open(cfg_name, "r") as f:
+    config = json.load(f)
+
+SCHED_PATH = config["SCHED_PATH"]
+scheds = {SystemLoad[k]: v for k, v in config["scheds"].items()}
+
+#print(scheds)
+
 load = { }
 for s_load in list(scheds.keys())[:-1]:
     load[s_load] = False
@@ -26,8 +34,8 @@ SLEEP_INTERVAL = 3
 THRESHOLDS = {
         SystemLoad.CPU: 1000,
         SystemLoad.IO: 1000,
-        SystemLoad.MEM: 1200,
-        SystemLoad.NET: 800,
+        SystemLoad.MEM: 2000,
+        SystemLoad.NET: 1000,
         SystemLoad.PARALLEL: None
 }
 
@@ -38,7 +46,7 @@ def get_sys_cpus():
         return os.cpu_count()
 
 THRESHOLDS[SystemLoad.PARALLEL] = get_sys_cpus()
-print(f"Parallelism threshold set to {THRESHOLDS[SystemLoad.PARALLEL]}")
+#print(f"Parallelism threshold set to {THRESHOLDS[SystemLoad.PARALLEL]}")
 
 p = subprocess.Popen([f'{SCHED_PATH}/{scheds[SystemLoad.CPU]}'], stdout=subprocess.DEVNULL)
 while(True):
@@ -50,19 +58,18 @@ while(True):
         threshold = THRESHOLDS[s_load]
         load[s_load] = load_val >= threshold if threshold is not None else False
 
-    print(load)
+    # print(load)
 
     new_load = evaluate(*list(load.values()))
     if not (curr_load == new_load and load[new_load] == True):
         curr_load = new_load
         p.kill()
         p = subprocess.Popen([f'{SCHED_PATH}/{scheds[curr_load]}'], stdout=subprocess.DEVNULL)
-        print(f"Switched to {scheds[curr_load]}, {curr_load.name}")
+        # print(f"\n==========\nSwitched to {scheds[curr_load]}, {curr_load.name}\n==========\n")
 
     #b["ba_bawm"].clear()
     for k in list(b["ba_bawm"].keys()):
         if int(k.value) != 4:
             del b["ba_bawm"][k]
-
-
+            
     time.sleep(SLEEP_INTERVAL)
