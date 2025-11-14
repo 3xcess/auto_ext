@@ -98,7 +98,7 @@ async def parse_builtin(line):
         return True
     
     if line.startswith(":pull"):
-        import subprocess, os
+        import subprocess
         parts = line.split()
         if len(parts) < 3:
             print("[supershell] Usage: :pull <remote_path> <local_path>")
