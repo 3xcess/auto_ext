@@ -17,6 +17,8 @@ usage() {
 
 # Default mode is to run both profilers and dispatcher
 MODE="both"
+CONFIG=""
+
 while getopts ":m:h" opt; do
     case "$opt" in
         m)
@@ -75,9 +77,11 @@ start_profilers() {
             ;;
     esac
 }
+CONFIG=${2:-main}
 run_dispatcher() {
-    echo ">>> Launching dispatcher (sudo python dispatcher.py)"
-    (cd .. && sudo python dispatcher.py) &
+    local cfg=${1:-main}
+    echo ">>> Launching dispatcher (sudo python dispatcher.py ${cfg})"
+    (cd .. && sudo python dispatcher.py ${cfg}) &
 }
 case "$MODE" in
     profile)
@@ -86,7 +90,7 @@ case "$MODE" in
         ;;
     sched)
         echo ">>> Running dispatcher only"
-        run_dispatcher
+        run_dispatcher "$CONFIG"
         ;;
     both)
         echo "Launching BA-BAWM profilers and dispatcher. Press Ctrl+C or kill this script to stop them."
@@ -99,8 +103,6 @@ case "$MODE" in
             fi
             sleep 0.5
         done
-        run_dispatcher
+        run_dispatcher "$CONFIG"
         ;;
 esac
-
-wait

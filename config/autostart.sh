@@ -5,7 +5,8 @@ VM_ID=$(cat /etc/hostname 2>/dev/null || echo unknown)
 AUTO_EXT_DIR="/mnt/w/"
 
 cd "$AUTO_EXT_DIR" || exit 1
-./get-dependencies.sh
+sudo chmod +x get-dependencies.sh
+sudo ./get-dependencies.sh
 echo "======================================"
 echo "||      Dependencies Installed      ||"
 echo "====================================="

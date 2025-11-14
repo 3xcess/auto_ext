@@ -49,11 +49,15 @@ THRESHOLDS[SystemLoad.PARALLEL] = get_sys_cpus()
 #print(f"Parallelism threshold set to {THRESHOLDS[SystemLoad.PARALLEL]}")
 
 p = subprocess.Popen([f'{SCHED_PATH}/{scheds[SystemLoad.CPU]}'], stdout=subprocess.DEVNULL)
-while(True):
-    b = BPF(text='BPF_TABLE_PINNED("hash", u64, u64, ba_bawm, 1024, "/sys/fs/bpf/ba_bawm");')
 
+b = BPF(text='''
+BPF_TABLE_PINNED("hash", u64, u64, ba_bawm, 1024, "/sys/fs/bpf/ba_bawm");
+''')
+ba_bawm = b["ba_bawm"]
+
+while(True):
     for i, s_load in enumerate(load):
-        val = b["ba_bawm"].get(ctypes.c_uint(i))
+        val = ba_bawm.get(ctypes.c_uint(i))
         load_val = val.value if val is not None else 0
         threshold = THRESHOLDS[s_load]
         load[s_load] = load_val >= threshold if threshold is not None else False
