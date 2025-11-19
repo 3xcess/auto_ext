@@ -1,0 +1,54 @@
+===== 2025-11-19T08:33:31-06:00 Benchmark comparison (vm2 vs vm1) =====
+Comparing benchmark averages:
+  vm1: /home/sujot/working/auto_ext/config/tests/vm1-test.txt
+  vm2: /home/sujot/working/auto_ext/config/tests/vm2-test.txt
+=== Average comparison (vm2 vs vm1) ===
+BENCHMARK          N1     AVG1_MS      N2     AVG2_MS      DELTA_MS     DELTA_%  
+---------          --     -------      --     -------      --------     -------- 
+perf_sched_all     -      -            2      57488.0      -            -        
+phoronix_compress  1      39182.0      -      -            -            -        
+phoronix_pybench   1      11971.0      -      -            -            -        
+schbench           -      -            2      10010.5      -            -        
+sysbench_cpu       1      10014.0      1      10016.0      2.0          0.0      
+sysbench_fileio    1      10031.0      1      10020.0      -11.0        -0.1     
+sysbench_memory    2      10007.5      -      -            -            -        
+
+=== Summary: vm2 vs vm1 (lower elapsed_ms is better) ===
+perf_sched_all     (CPU)        insufficient data
+phoronix_compress  (-)          insufficient data
+phoronix_pybench   (CPU/MEM)    insufficient data
+schbench           (CPU)        insufficient data
+sysbench_cpu       (CPU)        vm1 better
+sysbench_fileio    (IO)         vm2 better
+sysbench_memory    (MEM)        insufficient data
+
+Any case vm2 better: Yes
+
+
+===== 2025-11-19T08:33:32-06:00 Benchmark comparison (vm2 vs vm1) =====
+Comparing benchmark averages:
+  vm1: /home/sujot/working/auto_ext/config/tests/vm1-test.txt
+  vm2: /home/sujot/working/auto_ext/config/tests/vm2-test.txt
+=== Average comparison (vm2 vs vm1) ===
+BENCHMARK          N1     AVG1_MS      N2     AVG2_MS      DELTA_MS     DELTA_%  
+---------          --     -------      --     -------      --------     -------- 
+perf_sched_all     -      -            2      57488.0      -            -        
+phoronix_compress  1      39182.0      -      -            -            -        
+phoronix_pybench   1      11971.0      -      -            -            -        
+schbench           -      -            2      10010.5      -            -        
+sysbench_cpu       1      10014.0      1      10016.0      2.0          0.0      
+sysbench_fileio    1      10031.0      1      10020.0      -11.0        -0.1     
+sysbench_memory    2      10007.5      -      -            -            -        
+
+=== Summary: vm2 vs vm1 (lower elapsed_ms is better) ===
+perf_sched_all     (CPU)        insufficient data
+phoronix_compress  (-)          insufficient data
+phoronix_pybench   (CPU/MEM)    insufficient data
+schbench           (CPU)        insufficient data
+sysbench_cpu       (CPU)        vm1 better
+sysbench_fileio    (IO)         vm2 better
+sysbench_memory    (MEM)        insufficient data
+
+Any case vm2 better: Yes
+
+
