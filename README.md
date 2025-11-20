@@ -71,7 +71,9 @@ Run the following steps from the **host** machine.
 ### Launch and provision the VMs
 ```bash
 cd config
-./launch_2vms.sh #Launches the 2 config VMs
+./launch_2vms.sh -a "0-1;2-3" 
+#Launches the 2 config VMs
+#-a option specifies which cpu sets to use per VM
 ```
 
 ### Once VMs are available
@@ -86,4 +88,4 @@ cd config
 ./ssh_vm.sh all -- sudo poweroff #Once tests are done
 ```
 
-### The result log is available at config/tests/results.log
+**The result log is available at config/tests/results.log**
