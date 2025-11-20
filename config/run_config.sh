@@ -38,7 +38,7 @@ echo '======== Preparation Phase ========'
 echo -e "n\nY" | ./ssh_vm.sh all -- /mnt/w/config/tests/phoronix-test-suite/./phoronix-test-suite batch-setup
 
 echo 'Installing tiobench'
-q ./ssh_vm.sh all -- /mnt/w/config/tests/phoronix-test-suite/./phoronix-test-suite install pts/tiobench
+./ssh_vm.sh all -- /mnt/w/config/tests/phoronix-test-suite/./phoronix-test-suite install pts/tiobench
 
 echo 'Creating sysbench test files'
 q ./ssh_vm.sh all -- sysbench fileio prepare
