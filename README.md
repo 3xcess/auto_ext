@@ -72,7 +72,10 @@ Run the following steps from the **host** machine.
 ```bash
 cd config
 ./launch_2vms.sh #Launches the 2 config VMs
+```
 
+### Once VMs are available
+```bash
 ./run_config.sh --loops=5 
 #Default is 1, set to any number of loops needed. 
 #Each loop runs 5 iterations of 3 random benchmarks.
