@@ -46,7 +46,7 @@ echo '===== END ====='
 echo
 
 echo '========== Starting Auto_Ext =========='
-./ssh_vm.sh all -- /mnt/w/config/autostart.sh
+./ssh_vm.sh all -- nohup /mnt/w/config/autostart.sh >/dev/null 2>&1 
 
 echo "Waiting 20 seconds for profilers + dispatcher to stabilize..."
 sleep 20
