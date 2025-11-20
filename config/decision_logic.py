@@ -6,14 +6,15 @@ import random
 from datetime import datetime, timedelta
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
+root_dir = os.path.abspath(os.path.join(script_dir, ".."))
 
 vm1_test = os.path.join(script_dir, "tests", "vm1-test.txt")
 vm2_test = os.path.join(script_dir, "tests", "vm2-test.txt")
 vm2_detail = os.path.join(script_dir, "tests", "vm2-test_detail.txt")
 results_log = os.path.join(script_dir, "tests", "results.log")
 
-main_path = os.path.join("/mnt/w", "dispatcher_config_main.json")
-alt_path = os.path.join("/mnt/w", "dispatcher_config_alt.json")
+main_path = os.path.join(root_dir, "dispatcher_config_main.json")
+alt_path = os.path.join(root_dir, "dispatcher_config_alt.json")
 
 def parse_test_file(path):
     """
