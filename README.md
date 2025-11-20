@@ -54,7 +54,7 @@ Rest of the dependencies are handled by the install script
 
    **Fetch a cloud image (e.g., Ubuntu 25.04).**
    ```bash
-   cd SelfTune-OS
+   cd config
    wget https://cloud-images.ubuntu.com/plucky/current/plucky-server-cloudimg-amd64.img
    # Remember, use the same/similar version as your host machine to avoid 
    # any possible disparities within the binaries when built on the host
