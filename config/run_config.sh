@@ -23,21 +23,33 @@ if ! [[ "$LOOPS" =~ ^[0-9]+$ ]] || (( LOOPS <= 0 )); then
 fi
 
 echo '======== Installing prerequisites ========='
+echo 'Updating packages'
 q ./ssh_vm.sh all -- sudo apt update
 
+echo 'Installing sysbench'
 q ./ssh_vm.sh all -- sudo apt install -y sysbench
 # q ./ssh_vm.sh all -- sudo apt install -y iperf3
+echo 'Installing phoronix-test-suite'
 q ./ssh_vm.sh all -- sudo apt install -y php-cli php-xml git
-echo '===== END ====='
+echo '===== Prerequisites Installed ====='
 echo
 
 echo '======== Preparation Phase ========'
 echo -e "n\nY" | ./ssh_vm.sh all -- /mnt/w/config/tests/phoronix-test-suite/./phoronix-test-suite batch-setup
 q ./ssh_vm.sh all -- /mnt/w/config/tests/phoronix-test-suite/./phoronix-test-suite install pts/tiobench
 
+echo 'Creating sysbench test files'
 q ./ssh_vm.sh all -- sysbench fileio prepare
 echo '===== END ====='
 echo
+
+echo '========== Starting Auto_Ext =========='
+./ssh_vm.sh all -- /mnt/w/config/autostart.sh
+
+echo "Waiting 20 seconds for profilers + dispatcher to stabilize..."
+sleep 20
+echo ''
+echo '========== Auto_Ext Running =========='
 
 for (( loop = 1; loop <= LOOPS; loop++ )); do
   echo "=== Loop ${loop}/${LOOPS}: Running tests ==="
