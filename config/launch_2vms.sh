@@ -5,11 +5,11 @@ usage() {
     cat <<EOF
 Usage: $(basename "$0") [-b base_image] [-a core_sets]
 
-Launch three VMs. Optionally pin each VM's QEMU process to specific host CPUs.
+Launch two VMs. Optionally pin each VM's QEMU process to specific host CPUs.
 
 Options:
   -b base_image  Path to the base qcow2 image (default: plucky-server-cloudimg-amd64.img)
-  -a core_sets   Semicolon-separated host CPU specs per VM (vm1;vm2;vm3), e.g. "0-1;2,3;4-5"
+  -a core_sets   Semicolon-separated host CPU specs per VM (vm1;vm2), e.g. "0-1;2,3"
   -h             Show this help message
 
 Passing a positional argument for the base image is still supported for backward compatibility.
@@ -110,6 +110,10 @@ users:
     ssh_authorized_keys:
       - $PUBKEY
 ssh_pwauth: false
+bootcmd:
+  - [ mkdir, -p, /mnt/w ]
+mounts:
+  - [ "workloads", "/mnt/w", "9p", "trans=virtio,version=9p2000.L,msize=262144,rw,cache=none,_netdev", "0", "0" ]
 EOF
     cat > "$dir/meta-data" <<EOF
 instance-id: iid-$name
@@ -156,7 +160,7 @@ launch_vm() {
 }
 
 # === Main loop ===
-for i in 1 2 3; do
+for i in 1 2; do
     name="vm${i}"
     port=$((2220 + i))
     host_spec=""
@@ -172,5 +176,5 @@ done
 
 echo
 echo "✅ All VMs launched successfully."
-echo "Shared folder: $SHARE_DIR (mounted as /mnt/workloads)"
+echo "Shared folder: $SHARE_DIR (mounted as /mnt/w)"
 echo "SSH key: $KEYDIR/id_ed25519"

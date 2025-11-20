@@ -104,6 +104,10 @@ users:
     ssh_authorized_keys:
       - $PUBKEY
 ssh_pwauth: false
+bootcmd:
+  - [ mkdir, -p, /mnt/w ]
+mounts:
+  - [ "workloads", "/mnt/w", "9p", "trans=virtio,version=9p2000.L,msize=262144,rw,cache=none,_netdev", "0", "0" ]
 EOF
     cat > "$dir/meta-data" <<EOF
 instance-id: iid-$name
@@ -158,5 +162,6 @@ echo "✅ VM launched successfully."
 echo "Name: $VM_NAME"
 echo "CPU cores: $VCPU_COUNT"
 echo "Memory: ${MEMORY_MB} MiB"
-echo "Shared folder: $SHARE_DIR (mounted as /mnt/workloads)"
+echo "Shared folder: $SHARE_DIR (mounted as /mnt/w)"
 echo "SSH key: $KEYDIR/id_ed25519"
+

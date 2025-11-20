@@ -9,8 +9,9 @@ HOST="localhost"
 usage() {
     cat <<EOF >&2
 Usage:
-  $0 [ssh] <vm1|vm2|vm3|1|2|3> [--] [remote command...]
-  $0 scp <vm1|vm2|vm3|1|2|3> [--] <src...> <dest>
+  $0 [ssh] <vm1|vm2|1|2> [--] [remote command...]
+  $0 ssh all -- [remote command...]
+  $0 scp <vm1|vm2|1|2> [--] <src...> <dest>
   $0 scp all -- <src...> <dest>
 
 Examples:
@@ -40,7 +41,6 @@ resolve_vm() {
     case "$1" in
         vm1|1) printf '%s %s\n' "vm1" "2221" ;;
         vm2|2) printf '%s %s\n' "vm2" "2222" ;;
-        vm3|3) printf '%s %s\n' "vm3" "2223" ;;
         *) return 1 ;;
     esac
 }
@@ -75,6 +75,39 @@ COMMON_OPTS=(-i "$SSH_KEY" -o StrictHostKeyChecking=no -o UserKnownHostsFile=/de
 if [ "$action" = "ssh" ]; then
     target="$1"
     shift
+    if [ "$target" = "all" ]; then
+        if [ "${1:-}" = "--" ]; then
+            shift
+        fi
+        if [ $# -lt 1 ]; then
+            echo "ssh all requires a remote command (non-interactive)." >&2
+            usage
+        fi
+        all_args=("$@")
+        pids=()
+        for vm in vm1 vm2; do
+            if ! read -r label port < <(resolve_vm "$vm"); then
+                echo "Unknown VM selector: $vm" >&2
+                exit 1
+            fi
+            echo "[vm-connect] ssh -> $label ($HOST:$port) [parallel]"
+            (
+                ssh \
+                    "${COMMON_OPTS[@]}" \
+                    -p "$port" \
+                    "$USER@$HOST" \
+                    "${all_args[@]}"
+            ) | sed -u "s/^/[$label] /" &
+            pids+=("$!")
+        done
+        status=0
+        for pid in "${pids[@]}"; do
+            if ! wait "$pid"; then
+                status=1
+            fi
+        done
+        exit "$status"
+    fi
     if ! read -r label port < <(resolve_vm "$target"); then
         echo "Unknown VM selector: $target" >&2
         usage
@@ -101,7 +134,7 @@ if [ "$action" = "scp" ]; then
             usage
         fi
         all_args=("$@")
-        for vm in vm1 vm2 vm3; do
+        for vm in vm1 vm2; do
             if ! read -r label port < <(resolve_vm "$vm"); then
                 echo "Unknown VM selector: $vm" >&2
                 exit 1
@@ -126,3 +159,4 @@ fi
 
 echo "Unknown action: $action" >&2
 usage
+

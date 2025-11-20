@@ -1,3 +1,9 @@
 .old/
 .vscode/
 __pycache__/
+scx/
+config/tests/schbench/
+config/tests/phoronix-test-suite/
+config/vms/
+*.img
+profilers_c/vmlinux.h

@@ -71,38 +71,21 @@ Run the following steps from the **host** machine.
 ### Launch and provision the VMs
 ```bash
 cd config
-mkdir results
-./launch_3vms.sh
-./ssh_vm.sh scp all -- setup_overlayfs.sh :/home/u
-./ssh_vm.sh scp all -- autostart.sh :/home/u
-./ssh_vm.sh scp all -- tests/perfbench.sh :/home/u #This will be updated to include other tests once available
-./supershell.py
+./launch_2vms.sh -a "0-1;2-3" 
+#Launches the 2 config VMs
+#-a option specifies which cpu sets to use per VM
 ```
 
-### Inside Supershell
+### Once VMs are available
 ```bash
-sudo ./setup_overlayfs.sh
-sudo ./autostart.sh
-:q
+./run_config.sh --loops=5 
+#Default is 1, set to any number of loops needed. 
+#Each loop runs 5 iterations of 3 random benchmarks.
 ```
 
-### Re-enter Supershell to run benchmarks
+### Powering off the VMs
 ```bash
-./supershell.py
-sudo ./tests/perfbench.sh
-supersh> :pull /home/u/results ./results/
-:q
-```
-### Results
-Benchmark results will be stored on the host under:
-```bash
-auto_ext/config/results/
+./ssh_vm.sh all -- sudo poweroff #Once tests are done
 ```
 
-with subdirectories for each VM:
-```bash
-auto_ext/config/results/
-├── vm1/
-├── vm2/
-└── vm3/
-```
+**The result log is available at config/tests/results.log**
