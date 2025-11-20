@@ -7,7 +7,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 VM_ID=$(cat /etc/hostname 2>/dev/null || echo unknown)
 
-TEST_FILE="${SCRIPT_DIR}/${VM_ID}-test.txt" 
+TEST_FILE="${SCRIPT_DIR}/${VM_ID}-test.txt"
 DETAIL_FILE="${SCRIPT_DIR}/${VM_ID}-test_detail.txt"
 
 if [[ ! -f "$TEST_FILE" ]]; then
@@ -55,8 +55,7 @@ BENCHMARKS=(
   "phoronix_compress:::${SCRIPT_DIR}/phoronix-test-suite/./phoronix-test-suite batch-benchmark tiobench"
   "phoronix_pybench:::${SCRIPT_DIR}/phoronix-test-suite/./phoronix-test-suite batch-benchmark pybench"
   "phoronix_sqlite:::${SCRIPT_DIR}/phoronix-test-suite/./phoronix-test-suite batch-benchmark sqlite"
-  # Adjust server and duration for your iperf setup
-  #"iperf3:::iperf3 -c 127.0.0.1 -t 10"
+  # "iperf3:::iperf3 -c 127.0.0.1 -t 10"
 )
 
 run_benchmark() {
@@ -86,44 +85,8 @@ run_benchmark() {
   printf '%s iter=%s name=%s status=%s elapsed_ms=%s\n' \
     "$(date -Is)" "$iter" "$name" "$status" "$elapsed_ms" >>"$TEST_FILE"
 
-  local metrics=""
-  case "$name" in
-    sysbench_cpu|sysbench_memory|sysbench_fileio)
-      metrics=$(grep -Ei 'total time|events|transferred|throughput' "$stdout_file" || true)
-      ;;
-    perf_sched_all)
-      metrics=$(grep -Ei 'Total time:|summary' "$stdout_file" || true)
-      ;;
-    schbench)
-      metrics=$(grep -Ei 'rps|sched' "$stdout_file" || true)
-      ;;
-    phoronix)
-      metrics=$(grep -Ei 'Average|Deviation|pts' "$stdout_file" || true)
-      ;;
-    iperf3)
-      metrics=$(grep -Ei 'sender|receiver' "$stdout_file" || true)
-      ;;
-  esac
-
-  {
-    printf '[%s] iter=%s name=%s status=%s elapsed_ms=%s\n' \
-      "$(date -Is)" "$iter" "$name" "$status" "$elapsed_ms"
-
-    if [[ -n "$metrics" ]]; then
-      echo "$metrics"
-    else
-      # If no filter matched, you can either:
-      #   - leave it empty, OR
-      #   - fall back to full stdout for debugging.
-      # For now, we keep it compact and *do not* dump full output.
-      echo "(no metric filter matched for $name)"
-    fi
-    echo
-  } >>"$DETAIL_FILE"
-
   rm -f "$stdout_file" "$stderr_file"
 }
-
 
 for ((iter = 1; iter <= RUNS; iter++)); do
   echo "=== Iteration $iter / $RUNS ==="
@@ -140,5 +103,4 @@ for ((iter = 1; iter <= RUNS; iter++)); do
   done
 done
 
-echo "Done. Timing logged to $TEST_FILE, details to $DETAIL_FILE."
-
+echo "Done. Timing logged to $TEST_FILE, load changes to $DETAIL_FILE (via dispatcher)."
