@@ -187,6 +187,11 @@ def main():
         "build/scheds/c/scx_central",
         "build/scheds/c/scx_prev",
         "target/release/scx_flash",
+        "target/release/scx_beerland",
+        "target/release/scx_layered",
+        "target/release/scx_lavd",
+        "target/release/scx_cosmos",
+        "build/scheds/c/scx_nest",
     ]
     if asched:
         rk = random.choice(list(asched.keys()))
